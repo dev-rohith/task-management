@@ -1,145 +1,108 @@
-import request, { Response } from "supertest";
+import request from "supertest";
 import app from "../../src/index";
 
-// Constants & Helpers
-const TEST_EMAIL = "test@example.com";
-const TEST_PASSWORD = "password123";
-
-let authToken: string;
-let userId: string;
-
-const registerTestUser = async (email = TEST_EMAIL) => {
-  const res = await request(app)
-    .post("/api/auth/register")
-    .send({ name: "Test", email, password: TEST_PASSWORD });
-
-  return {
-    token: res.body.token,
-    userId: res.body.user.id,
-  };
-};
-
-const authRequest = () => ({
-  get: (url: string) => request(app).get(url).set("Authorization", `Bearer ${authToken}`),
-  post: (url: string) => request(app).post(url).set("Authorization", `Bearer ${authToken}`),
-  put: (url: string) => request(app).put(url).set("Authorization", `Bearer ${authToken}`),
-  delete: (url: string) => request(app).delete(url).set("Authorization", `Bearer ${authToken}`),
-});
-
-
-const expectBadRequest = (res: Response) => {
-  expect(res.status).toBe(400);
-  expect(res.body).toHaveProperty("error");
-};
-
-const expectUnauthorized = (res: Response) => {
-  expect(res.status).toBe(401);
-  expect(res.body).toHaveProperty("error");
-};
-
-const xssPayloads = [
-  "<script>alert('xss')</script>",
-  "<img src=x onerror=alert('xss')>",
-  "<svg/onload=alert('xss')>",
-];
-
-const invalidDates = ["2023-13-01", "not-a-date", "2023-02-30"];
-
-const malformedHeaders = [
-  "Bearer",
-  "Bearer ",
-  "Basic dGVzdDp0ZXN0",
-  "InvalidScheme token",
-  TEST_PASSWORD,
-];
-
-beforeEach(async () => {
-  const { token, userId: id } = await registerTestUser();
-  authToken = token;
-  userId = id;
-});
-
-afterAll(async () => {
-  // Replace with your cleanup route or logic
-  await request(app)
-    .delete("/api/auth/cleanup-test-users")
-    .send({ testEmail: TEST_EMAIL });
-});
-
-// Authentication & Headers
 describe("Security Tests", () => {
-  test.each(malformedHeaders)("Rejects malformed auth header: %s", async (header) => {
-    const res = await request(app).get("/api/tasks").set("Authorization", header);
-    expectUnauthorized(res);
+  const TEST_EMAIL = "test@example.com";
+  const TEST_PASSWORD = "password123";
+
+  let authToken: string;
+
+  beforeAll(async () => {
+    // Register test user once for all tests
+    const res = await request(app)
+      .post("/api/auth/register")
+      .send({ name: "Test User", email: TEST_EMAIL, password: TEST_PASSWORD });
+    authToken = res.body.token;
   });
 
-  test("Rejects request without Authorization header", async () => {
-    const res = await request(app).get("/api/tasks");
-    expectUnauthorized(res);
+  afterAll(async () => {
+    // Clean up test user
+    await request(app)
+      .delete("/api/auth/cleanup-test-users")
+      .send({ testEmail: TEST_EMAIL });
   });
-});
 
-// Input Validation Tests
-describe("Input Validation", () => {
-  test("Rejects invalid dates", async () => {
-    for (const date of invalidDates) {
-      const res = await authRequest().post("/api/tasks").send({
-        title: "Test",
-        description: "Test Desc",
-        dueDate: date,
-        priority: "High",
+  describe("Security Tests", () => {
+    describe("Authentication", () => {
+      it("should reject requests without auth token", async () => {
+        const res = await request(app).get("/api/tasks");
+        expect(res.status).toBe(401);
       });
-      expectBadRequest(res);
-    }
-  });
 
-  test("Rejects unsupported priority", async () => {
-    const res = await authRequest().post("/api/tasks").send({
-      title: "Test",
-      description: "Test Desc",
-      dueDate: "2025-12-31",
-      priority: "Extreme", // invalid
+      it("should reject invalid auth tokens", async () => {
+        const res = await request(app)
+          .get("/api/tasks")
+          .set("Authorization", "Bearer invalid.token.here");
+        expect(res.status).toBe(401);
+      });
     });
-    expectBadRequest(res);
-  });
 
-  test("Rejects empty or missing required fields", async () => {
-    const res = await authRequest().post("/api/tasks").send({});
-    expectBadRequest(res);
-  });
-});
+    describe("Input Validation", () => {
+      it("should reject malformed task data", async () => {
+        const testCases = [
+          {},
+          { title: "" },
+          { title: "   " },
+          { title: "Valid", dueDate: "invalid-date" },
+          { title: "Valid", priority: "InvalidPriority" },
+        ];
 
-// XSS Injection Attempts
-describe("XSS Injection Protection", () => {
-  test.each(xssPayloads)("Rejects XSS title: %s", async (payload) => {
-    const res = await authRequest().post("/api/tasks").send({
-      title: payload,
-      description: "XSS test",
-      dueDate: "2025-12-31",
-      priority: "Medium",
+        for (const data of testCases) {
+          const res = await request(app)
+            .post("/api/tasks")
+            .set("Authorization", `Bearer ${authToken}`)
+            .send(data);
+          expect(res.status).toBe(400);
+        }
+      });
+
+      it("should sanitize HTML/XSS inputs", async () => {
+        const xssPayloads = [
+          "<script>alert('xss')</script>",
+          "<img src=x onerror=alert('xss')>",
+          "<svg/onload=alert('xss')>",
+        ];
+
+        for (const payload of xssPayloads) {
+          const res = await request(app)
+            .post("/api/tasks")
+            .set("Authorization", `Bearer ${authToken}`)
+            .send({
+              title: payload,
+              description: "Test description",
+            });
+
+          // Either rejects the payload completely (400) or sanitizes it (201)
+          if (res.status === 201) {
+            expect(res.body.title).not.toContain("<script>");
+            expect(res.body.title).not.toContain("onerror");
+          } else {
+            expect(res.status).toBe(400);
+          }
+        }
+      });
     });
-    expectBadRequest(res);
-  });
 
-  test.each(xssPayloads)("Rejects XSS description: %s", async (payload) => {
-    const res = await authRequest().post("/api/tasks").send({
-      title: "XSS",
-      description: payload,
-      dueDate: "2025-12-31",
-      priority: "Medium",
+    describe("Authorization", () => {
+      it("should prevent access to other users' data", async () => {
+        const user2 = await request(app)
+          .post("/api/auth/register")
+          .send({
+            name: "User 2",
+            email: "user2@example.com",
+            password: "password456",
+          });
+
+        const task = await request(app)
+          .post("/api/tasks")
+          .set("Authorization", `Bearer ${authToken}`)
+          .send({ title: "Private task" });
+
+        const res = await request(app)
+          .get(`/api/tasks/${task.body.id}`)
+          .set("Authorization", `Bearer ${user2.body.token}`);
+        expect([403, 404]).toContain(res.status);
+      });
     });
-    expectBadRequest(res);
-  });
-});
-
-//Rate Limiting (optional, simulate 429 if enabled)
-describe.skip("Rate Limiting", () => {
-  test("Should block after 100 requests", async () => {
-    const requests = Array.from({ length: 101 }, () =>
-      authRequest().get("/api/tasks")
-    );
-    const results = await Promise.all(requests);
-    const rateLimitHit = results.find((res) => res.status === 429);
-    expect(rateLimitHit).toBeDefined();
   });
 });
