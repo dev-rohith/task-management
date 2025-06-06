@@ -1,6 +1,5 @@
-import request from "supertest";
+import request, { Response } from "supertest";
 import app from "../../src/index";
-import { Response } from "supertest";
 
 // Constants & Helpers
 const TEST_EMAIL = "test@example.com";
@@ -20,8 +19,13 @@ const registerTestUser = async (email = TEST_EMAIL) => {
   };
 };
 
-const authRequest = () =>
-  request(app).set("Authorization", `Bearer ${authToken}`);
+const authRequest = () => ({
+  get: (url: string) => request(app).get(url).set("Authorization", `Bearer ${authToken}`),
+  post: (url: string) => request(app).post(url).set("Authorization", `Bearer ${authToken}`),
+  put: (url: string) => request(app).put(url).set("Authorization", `Bearer ${authToken}`),
+  delete: (url: string) => request(app).delete(url).set("Authorization", `Bearer ${authToken}`),
+});
+
 
 const expectBadRequest = (res: Response) => {
   expect(res.status).toBe(400);
