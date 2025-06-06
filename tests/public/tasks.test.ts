@@ -6,7 +6,7 @@ describe('Task Routes', () => {
   let userId: string;
 
   beforeEach(async () => {
-    // Register and login a test user
+    // Register and login test user
     const registerResponse = await request(app)
       .post('/api/auth/register')
       .send({
@@ -37,7 +37,7 @@ describe('Task Routes', () => {
       expect(response.body.title).toBe(taskData.title);
       expect(response.body.description).toBe(taskData.description);
       expect(response.body.priority).toBe(taskData.priority);
-      expect(response.body.status).toBe('pending'); // default status
+      expect(response.body.status).toBe('pending');
     });
 
     it('should return 401 without authentication', async () => {
@@ -215,7 +215,7 @@ describe('Task Routes', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
-      // Verify task is deleted
+      // Verifying task is deleted
       await request(app)
         .get(`/api/tasks/${taskId}`)
         .set('Authorization', `Bearer ${authToken}`)
