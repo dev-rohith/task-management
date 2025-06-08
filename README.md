@@ -1,87 +1,94 @@
-# API Fix and Implementation Task
+# API Fix and Task Management System Assessment - TypeScript
 
-## Overview
-You are provided with a partially implemented API. Your goal is to make the API fully functional by fixing the existing issues and implementing the missing features.
+## Company Assignment Overview
+**Position:** Backend Developer Assessment  
+**Technology Stack:** TypeScript, Node.js, Express, Drizzle ORM
 
-This document outlines what needs to be done, how the functionality should behave, and how success is measured.
+You've been provided with a partially implemented API codebase that simulates a real-world scenario where you need to debug existing functionality and complete missing features. This assessment evaluates your ability to work with existing code, implement RESTful APIs, and maintain code quality standards.
 
----
+## Task Description
+Fix existing issues and implement missing task CRUD features in the provided TypeScript/Node.js/Express API with Drizzle ORM.
 
-## Expected Fixes
+## Authentication Requirements
+- Fix `POST /api/auth/login` endpoint
+- Return JWT token and user data on successful login
 
-### 1. Fix Authentication
+## Task CRUD Operations
 
-- Ensure the `POST /api/auth/login` endpoint works correctly.
-- It should accept valid credentials and return:
-  - A valid JWT token.
-  - User data on successful login.
+| Endpoint | Method | Description | Response |
+|----------|--------|-------------|----------|
+| `/api/tasks` | POST | Create task | `201` + task object |
+| `/api/tasks` | GET | List tasks | `200` + array (supports `status` filter, pagination) |
+| `/api/tasks/:id` | GET | Get task by ID | `200` + task or `404` |
+| `/api/tasks/:id` | PUT | Update task | `200` + updated task |
+| `/api/tasks/:id` | DELETE | Delete task | `204` or `404` |
 
-### 2. Implement Task CRUD Operations
+## Error Handling
+- `400` - Invalid input
+- `401` - Authentication failure  
+- `404` - Resource not found
 
-You need to fully implement the following task-related endpoints:
+## Environment Setup
+Ensure you have the following configured in your `.env` file:
+```bash
+DATABASE_URL=your_database_connection_string
+JWT_SECRET=your_jwt_secret_key
+PORT=3000
+```
 
-#### Create Task
-- **Endpoint**: `POST /api/tasks`
-- **Expected Behavior**: Create a new task.
-- **Response**: Return HTTP status `201 Created` with the created task object.
+## Setup Instructions
+```bash
+npm install
+npm run migrate
+npm run seed
+npm run dev
+npm test
+```
 
-#### List Tasks
-- **Endpoint**: `GET /api/tasks`
-- **Expected Behavior**: Return a list of tasks.
-- **Features**:
-  - Support filtering by `status` (e.g., completed, pending).
-  - Support pagination using `page` and `limit` query parameters.
+## Project Structure
+```
+src/
+├── config/          # DB, environment config
+├── controllers/     # API handlers
+├── middleware/      # Auth, error handling
+├── models/          # Database models
+├── routes/          # Express routes
+├── services/        # Business logic
+├── types/           # TypeScript types
+├── utils/           # Utilities, error classes
+└── tests/           # Test suites
+```
 
-#### Get Single Task
-- **Endpoint**: `GET /api/tasks/:id`
-- **Expected Behavior**: Return the task with the given ID.
-- **Response**:
-  - Return `200 OK` if the task is found.
-  - Return `404 Not Found` if the task does not exist.
+## What We're Looking For
+- **Problem-solving skills** - Debug and fix existing authentication issues
+- **API design knowledge** - Implement RESTful endpoints following best practices
+- **TypeScript proficiency** - Maintain type safety throughout the codebase
+- **Error handling** - Proper HTTP status codes and error responses
+- **Code quality** - Clean, readable, and maintainable code
+- **Testing awareness** - Ensure all provided tests pass
 
-#### Update Task
-- **Endpoint**: `PUT /api/tasks/:id`
-- **Expected Behavior**: Update the task with the given ID.
-- **Response**: Return the updated task object with `200 OK`.
-
-#### Delete Task
-- **Endpoint**: `DELETE /api/tasks/:id`
-- **Expected Behavior**: Delete the task with the given ID.
-- **Response**:
-  - Return `204 No Content` on successful deletion.
-  - Return `404 Not Found` if the task does not exist.
-
----
-
-## Proper Error Handling
-
-Ensure the API returns appropriate error codes and messages:
-
-- Invalid or malformed data → `400 Bad Request`
-- Task not found → `404 Not Found`
-- Unauthorized access → `401 Unauthorized`
-
----
+## Submission Requirements
+- Complete the implementation within the given timeframe
+- Ensure all existing tests pass
+- Document any assumptions or design decisions made
+- Code should be production-ready quality
 
 ## Success Criteria
+## Evaluation Criteria
+**Technical Implementation (60%)**
+- Functionality completeness and correctness
+- Proper error handling and status codes
+- Code organization and TypeScript usage
 
-The implementation is considered complete when the following conditions are met:
+**Code Quality (25%)**
+- Readability and maintainability
+- Following established patterns in codebase
+- Proper validation and security practices
 
-- All 17 tests pass with no failures.
-- The authentication system works and returns valid JWT tokens.
-- All task CRUD operations are implemented and return correct status codes and data.
+**Testing & Documentation (15%)**
+- All tests passing
+- Clear commit messages and code comments
+- Any additional documentation provided
 
----
-## Install Dependencies
-This will install all prerequired packages for your assessment
-```sh
-npm install
-```
-## How to Test
-
-Run the test suite using the following command to track your progress:
-
-```sh
-npm run test
-```
-Best of luck!
+## Support
+If you encounter any setup issues or have questions about requirements, please reach out to the technical team. Focus on implementing the core functionality first, then optimize and refine as time permits.
