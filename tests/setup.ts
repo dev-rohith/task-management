@@ -1,4 +1,3 @@
-// tests/setup.ts
 import mongoose from 'mongoose';
 
 const TEST_DB_URI = process.env.TEST_MONGODB_URI || 'mongodb://localhost:27017/task-management-test';

@@ -67,7 +67,7 @@ Ensure the API returns appropriate error codes and messages:
 
 The implementation is considered complete when the following conditions are met:
 
-- All 18 tests pass with no failures.
+- All 17 tests pass with no failures.
 - The authentication system works and returns valid JWT tokens.
 - All task CRUD operations are implemented and return correct status codes and data.
 
