@@ -1,20 +1,31 @@
 ## Task Management System Assessment - TypeScript
 
-## Company Assignment Overview
+## Assignment Overview
 **Position:** Backend Developer Assessment  
 **Technology Stack:** TypeScript, Node.js, Express, Drizzle ORM
+
+## Submission Requirements
+- Complete the implementation within the given timeframe
+- Ensure all existing tests pass
+- Document any assumptions or design decisions made
+- Code should be production-ready quality
+
+## Setup Instructions
+```bash
+npm install        # Install all project dependencies
+npm run migrate    # Run database migrations
+npm run seed       # Seed the database with sample data
+npm run dev        # Start the development server
+npm test           # Run all tests
+```
 
 You've been provided with a partially implemented API codebase that simulates a real-world scenario where you need to debug existing functionality and complete missing features. This assessment evaluates your ability to work with existing code, implement RESTful APIs, and maintain code quality standards.
 
 ## Task Description
-Fix existing issues and implement missing task CRUD features in the provided TypeScript/Node.js/Express API with Drizzle ORM.
-
-## Authentication Requirements
-- Fix `POST /api/auth/login` endpoint
-- Return JWT token and user data on successful login
+Fix existing issues and implement missing task CRUD features in the provided repository.
 
 ## Task CRUD Operations
-
+Please go to `routes/task.ts` and complete the TODO Items.
 | Endpoint | Method | Description | Response |
 |----------|--------|-------------|----------|
 | `/api/tasks` | POST | Create task | `201` + task object |
@@ -31,18 +42,9 @@ Fix existing issues and implement missing task CRUD features in the provided Typ
 ## Environment Setup
 Ensure you have the following configured in your `.env` file:
 ```bash
-DATABASE_URL=your_database_connection_string
+DATABASE_URL=your_database_connection_string   # You can use a local database URL or a remote database URL for testing.
 JWT_SECRET=your_jwt_secret_key
 PORT=3000
-```
-
-## Setup Instructions
-```bash
-npm install
-npm run migrate
-npm run seed
-npm run dev
-npm test
 ```
 
 ## Project Structure
@@ -63,32 +65,21 @@ src/
 - **Problem-solving skills** - Debug and fix existing authentication issues
 - **API design knowledge** - Implement RESTful endpoints following best practices
 - **TypeScript proficiency** - Maintain type safety throughout the codebase
-- **Error handling** - Proper HTTP status codes and error responses
+- **Error handling** - Proper HTTP status codes and error responses 
 - **Code quality** - Clean, readable, and maintainable code
 - **Testing awareness** - Ensure all provided tests pass
 
-## Submission Requirements
-- Complete the implementation within the given timeframe
-- Ensure all existing tests pass
-- Document any assumptions or design decisions made
-- Code should be production-ready quality
-
-## Success Criteria
 ## Evaluation Criteria
-**Technical Implementation (60%)**
-- Functionality completeness and correctness
+- Complete and correct functionality
 - Proper error handling and status codes
-- Code organization and TypeScript usage
-
-**Code Quality (25%)**
-- Readability and maintainability
-- Following established patterns in codebase
-- Proper validation and security practices
-
-**Testing & Documentation (15%)**
+- Clean code structure and TypeScript usage
+- Readable and maintainable code
+- Consistent with existing patterns
+- Good validation and security practices
 - All tests passing
-- Clear commit messages and code comments
-- Any additional documentation provided
+- Clear commit messages and comments
+- Additional documentation if needed
+
 
 ## Support
 If you encounter any setup issues or have questions about requirements, please reach out to the technical team. Focus on implementing the core functionality first, then optimize and refine as time permits.
