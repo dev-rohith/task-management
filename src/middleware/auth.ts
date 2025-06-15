@@ -32,6 +32,9 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
     req.user = user;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token.' });
+    if(error instanceof Error){
+      res.status(401).json({ error: 'Invalid token.' });
+    }
+    console.log(error)
   }
 };

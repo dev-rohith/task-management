@@ -105,7 +105,7 @@ describe("Authentication Routes", () => {
     it("should return 401 for invalid credentials", async () => {
       const response = await request(app)
         .post("/api/auth/login")
-        .send({ email: TEST_EMAIL, password: "wrongpassword" })
+        .send({ email: TEST_EMAIL, password: "wrong password" })
         .expect(401);
 
       expect(response.body).toHaveProperty("error");
