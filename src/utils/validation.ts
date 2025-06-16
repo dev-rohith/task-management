@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { TaskStatus, TaskPriority } from '../models/Task';
 
 //validations are here you can change with your own schema validation library if you want like Zod, ExpressValidator, etc
+
 export const userRegistrationSchema = Joi.object({
   name: Joi.string().min(2).max(50).required().trim(),
   email: Joi.string().email().required().lowercase().trim(),

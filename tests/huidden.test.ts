@@ -109,20 +109,18 @@ describe("Security Tests", () => {
 
   describe("Authorization", () => {
     it("should prevent access to other users' data", async () => {
-      // Register second user
+
       const user2 = await request(app).post("/api/auth/register").send({
         name: "User 2",
         email: "user2@example.com",
         password: "password456",
       });
 
-      // Create task as first user
       const task = await request(app)
         .post("/api/tasks")
         .set("Authorization", `Bearer ${authToken}`)
         .send({ title: "Private task" });
 
-      // Try to access task with second user's token
       const res = await request(app)
         .get(`/api/tasks/${task.body.id}`)
         .set("Authorization", `Bearer ${user2.body.token}`);
