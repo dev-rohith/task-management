@@ -29,8 +29,8 @@ router.get("/", async (req: AuthRequest, res: Response): Promise<void> => {
      If validation fails, return proper status code with error message
     
      TODO: Extract and set default values for pagination and filtering
-     Get page (default: 1), limit (default: 10) from validated query
-     Get status, priority, sortBy (default: 'createdAt'), sortOrder (default: 'desc')
+     Get page default: 1, limit default: 10 from validated query
+     Get status, priority, sortBy 'createdAt', sortOrder 'desc'
      Get search term for title/description search
     
      TODO: Build database query conditions
@@ -40,10 +40,9 @@ router.get("/", async (req: AuthRequest, res: Response): Promise<void> => {
      Add search functionality for title and description if search term provided
     
      TODO: Execute database query with pagination and sorting
-     Use Task.find() with filters, skip, limit, and sort
-     Calculate skip value: (page - 1) * limit
-     Apply sorting: { [sortBy]: sortOrder === 'asc' ? 1 : -1 }
-     Get total count for pagination: Task.countDocuments() with same filters
+     Calculate skip value and paginate things
+     Apply sorting: sortOrder 'asc' or 'des'
+     Get total count for pagination with same filters
     
      TODO: Send paginated response
      Response format: {
