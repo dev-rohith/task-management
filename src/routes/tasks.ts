@@ -98,7 +98,7 @@ router.post("/", async (req: AuthRequest, res: Response): Promise<void> => {
     /*
      TODO: Validate request body using taskCreationSchema
      Expected req.body format: { title: string, description?: string, status?: TaskStatus, priority?: TaskPriority, dueDate?: Date }
-     Use taskCreationSchema.validate(req.body) with Joi
+     Use taskCreationSchema for validating request body with Joi
 
      If validation fails, return appropriate status with validation error details
      TODO: Extract validated data and set defaults
@@ -118,7 +118,7 @@ router.post("/", async (req: AuthRequest, res: Response): Promise<void> => {
      - updatedAt: new Date()
 
      TODO: Save task to database
-     Use Task.create() or new Task().save() to create the task
+     Use Task shema to store
 
      TODO: Return created task
      Send appropriate status with created task: { task: createdTask }
@@ -148,14 +148,13 @@ router.put("/:id", async (req: AuthRequest, res: Response): Promise<void> => {
     
 
      TODO: Find and check if task exists and belongs to user
-     Use Task.findOne() with conditions: { _id: taskId, userId: req.user.id }
      If task not found, return appropriate status with message: "Task not found"
     
 
      TODO: Update task with provided fields only
      Create updateData object with validated fields
-     Add updatedAt: new Date() to updateData
-     Use Task.findByIdAndUpdate() with { new: true } to return updated document
+     Add updatedAt to updateData
+     return updated document
     
 
      TODO: Return updated task
@@ -211,10 +210,10 @@ router.get(
        - completed: count where userId = req.user.id AND status = TaskStatus.COMPLETED
 
        TODO: Get counts by priority
-       Use Task.countDocuments() for each priority:
-       - low: count where userId = req.user.id AND priority = TaskPriority.LOW
-       - medium: count where userId = req.user.id AND priority = TaskPriority.MEDIUM
-       - high: count where userId = req.user.id AND priority = TaskPriority.HIGH
+       Use Task Model to perform operation :
+       - low: count where userId = req.user.id AND priority = TaskPriority LOW
+       - medium: count where userId = req.user.id AND priority = TaskPriority MEDIUM
+       - high: count where userId = req.user.id AND priority = TaskPriority HIGH
 
        TODO: Get overdue tasks count
        Count tasks where userId = req.user.id AND dueDate < new Date() AND status != TaskStatus.COMPLETED
