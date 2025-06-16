@@ -13,11 +13,18 @@ You are tasked with completing a role-based user management system built with Ty
 - Document any assumptions or design decisions made
 - Code should be production-ready quality
 
+## Environment Setup
+Ensure you have the following configured in your `.env` file:
+```bash
+# You can use a local database URL or a remote database URL for testing.
+DATABASE_URL=your_database_connection_string
+JWT_SECRET=your_jwt_secret_key
+PORT=3000
+```
+
 ## Setup Instructions
 ```bash
 npm install        # Install all project dependencies
-npm run migrate    # Run database migrations
-npm run seed       # Seed the database with sample data
 npm run dev        # Start the development server
 npm test           # Run all tests
 ```
@@ -44,14 +51,6 @@ Please go to `routes/task.ts` and complete the TODO Items.
 - `400` - Invalid input
 - `401` - Authentication failure  
 - `404` - Resource not found
-
-## Environment Setup
-Ensure you have the following configured in your `.env` file:
-```bash
-DATABASE_URL=your_database_connection_string   # You can use a local database URL or a remote database URL for testing.
-JWT_SECRET=your_jwt_secret_key
-PORT=3000
-```
 
 ## Project Structure
 ```
