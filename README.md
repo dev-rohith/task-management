@@ -1,7 +1,10 @@
 ## Task Management System Assessment - TypeScript
+### Note: Please read all the instructions before starting the assessment.
 
 ## Assignment Overview
-**Position:** Backend Developer Assessment  
+
+You are tasked with completing a role-based user management system built with TypeScript, Node.js, Express, and Mongoose ORM.
+
 **Technology Stack:** TypeScript, Node.js, Express, Drizzle ORM
 
 ## Submission Requirements
@@ -18,6 +21,9 @@ npm run seed       # Seed the database with sample data
 npm run dev        # Start the development server
 npm test           # Run all tests
 ```
+## Note: Do not make any changes to the test case files or the workflows/scripts, as doing so will lead to automatic disqualification.
+
+#### Note: Please go through all the source code, understand it thoroughly, and follow the comments for what needs to be done.
 
 You've been provided with a partially implemented API codebase that simulates a real-world scenario where you need to debug existing functionality and complete missing features. This assessment evaluates your ability to work with existing code, implement RESTful APIs, and maintain code quality standards.
 
