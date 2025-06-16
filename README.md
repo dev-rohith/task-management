@@ -36,6 +36,7 @@ You've been provided with a partially implemented API codebase that simulates a 
 
 ## Task Description
 Fix existing issues and implement missing task CRUD features in the provided repository.
+### Go to :- models/task.ts and routes/task.ts complete this files first then walk through all the code and understand problem solution run tests make sure all passing
 
 ## Task CRUD Operations
 Please go to `routes/task.ts` and complete the TODO Items.
