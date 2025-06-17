@@ -73,7 +73,7 @@ router.get("/:id", async (req: AuthRequest, res: Response): Promise<void> => {
      If invalid format, return appropriate status with error message
     
 
-     TODO: Find task by ID and user with conditions: { _id: taskId, userId: req.user.id }
+     TODO: Find task by ID and user from the db
      ensure user can only access their own tasks
     
 
@@ -179,7 +179,7 @@ router.delete(
        Validate if it's a valid MongoDB ObjectId format
        If invalid format, return appropriate status with error message
 
-       TODO: Find and delete task on db with conditions: { _id: taskId, userId: req.user.id }
+       TODO: Find and delete task on db 
        This ensures user can only delete their own tasks
 
        TODO: Check if task was found and deleted
@@ -204,7 +204,7 @@ router.get(
     try {
       /*
        TODO: Get counts by status
-       Use Task.countDocuments() for each status:
+       Count tasks for each status:
        - pending: count where userId = req.user.id AND status = TaskStatus.PENDING
        - inProgress: count where userId = req.user.id AND status = TaskStatus.IN_PROGRESS
        - completed: count where userId = req.user.id AND status = TaskStatus.COMPLETED
