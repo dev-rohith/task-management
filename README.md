@@ -1,8 +1,29 @@
-## Task Management System Assessment - TypeScript
+# Task Management Assessment - TypeScript
 
-## Assignment Overview
-**Position:** Backend Developer Assessment  
-**Technology Stack:** TypeScript, Node.js, Express, Drizzle ORM
+### Note: Please read all the instructions before starting the assessment.
+ 
+**Technology Stack:** TypeScript, Node.js, Express, mongoose ODM
+
+## Overview
+
+You are tasked with completing a  task management system built with TypeScript, Node.js, Express, and mongodb with mongoose ODM. The system has authentication with specific permissions and capabilities.
+
+### Requirements
+Authenticated User can able to do:
+
+1.list all the tasks with filters and pagination.
+
+2.Get specific task by task id.
+
+3.create task.
+
+4.Update existing task.
+
+5.delete existing task.
+
+6.Get task statistics.
+
+### Note: Do not make any changes to the test case files or the workflows/scripts, as doing so will lead to automatic disqualification.
 
 ## Submission Requirements
 - Complete the implementation within the given timeframe
@@ -22,7 +43,7 @@ npm test           # Run all tests
 You've been provided with a partially implemented API codebase that simulates a real-world scenario where you need to debug existing functionality and complete missing features. This assessment evaluates your ability to work with existing code, implement RESTful APIs, and maintain code quality standards.
 
 ## Task Description
-Fix existing issues and implement missing task CRUD features in the provided repository.
+- Fix existing issues and implement missing task CRUD features in the provided repository.
 
 ## Task CRUD Operations
 Please go to `routes/task.ts` and complete the TODO Items.
@@ -37,7 +58,7 @@ Please go to `routes/task.ts` and complete the TODO Items.
 ## Error Handling
 - `400` - Invalid input
 - `401` - Authentication failure  
-- `404` - Resource not found
+- `404` - Resource not found, etc
 
 ## Environment Setup
 Ensure you have the following configured in your `.env` file:
