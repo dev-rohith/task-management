@@ -1,12 +1,29 @@
+# Task Management Assessment - TypeScript
 
-## Task Management System Assessment - TypeScript
 ### Note: Please read all the instructions before starting the assessment.
+ 
+**Technology Stack:** TypeScript, Node.js, Express, mongoose ODM
 
-## Assignment Overview
+## Overview
 
-You are tasked with completing a role-based user management system built with TypeScript, Node.js, Express, and Mongoose ORM.
+You are tasked with completing a  task management system built with TypeScript, Node.js, Express, and mongodb with mongoose ODM. The system has authentication with specific permissions and capabilities.
 
-**Technology Stack:** TypeScript, Node.js, Express, Drizzle ORM
+### Requirements
+Authenticated User can able to do:
+
+1.list all the tasks with filters and pagination.
+
+2.Get specific task by task id.
+
+3.create task.
+
+4.Update existing task.
+
+5.delete existing task.
+
+6.Get task statistics.
+
+### Note: Do not make any changes to the test case files or the workflows/scripts, as doing so will lead to automatic disqualification.
 
 ## Submission Requirements
 - Complete the implementation within the given timeframe
@@ -14,31 +31,19 @@ You are tasked with completing a role-based user management system built with Ty
 - Document any assumptions or design decisions made
 - Code should be production-ready quality
 
-## Environment Setup
-Ensure you have the following configured in your `.env` file:
-```bash
-# You can use a local database URL or a remote database URL for testing.
-DATABASE_URL=your_database_connection_string
-JWT_SECRET=your_jwt_secret_key
-PORT=3000
-```
-
 ## Setup Instructions
 ```bash
 npm install        # Install all project dependencies
+npm run migrate    # Run database migrations
+npm run seed       # Seed the database with sample data
 npm run dev        # Start the development server
 npm test           # Run all tests
 ```
-### Note: Do not make any changes to the test case files or the workflows/scripts, as doing so will lead to automatic disqualification.
-
-#### Note: Please go through all the source code, understand it thoroughly, and follow the comments for what needs to be done.
 
 You've been provided with a partially implemented API codebase that simulates a real-world scenario where you need to debug existing functionality and complete missing features. This assessment evaluates your ability to work with existing code, implement RESTful APIs, and maintain code quality standards.
 
 ## Task Description
-
-Fix existing issues and implement missing task CRUD features in the provided repository.
-### Go to :- models/task.ts and routes/task.ts complete this files first then walk through all the code and understand problem solution run tests make sure all passing
+- Fix existing issues and implement missing task CRUD features in the provided repository.
 
 ## Task CRUD Operations
 Please go to `routes/task.ts` and complete the TODO Items.
@@ -54,6 +59,14 @@ Please go to `routes/task.ts` and complete the TODO Items.
 - `400` - Invalid input
 - `401` - Authentication failure  
 - `404` - Resource not found, etc
+
+## Environment Setup
+Ensure you have the following configured in your `.env` file:
+```bash
+DATABASE_URL=your_database_connection_string   # You can use a local database URL or a remote database URL for testing.
+JWT_SECRET=your_jwt_secret_key
+PORT=3000
+```
 
 ## Project Structure
 ```
