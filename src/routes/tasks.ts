@@ -26,11 +26,11 @@ router.get("/", async (req: AuthRequest, res: Response): Promise<void> => {
      TODO: Validate query parameters using taskQuerySchema
      Expected query params: { status?, priority?, page?, limit?, sortBy?, sortOrder?, search? }
      Use taskQuerySchema.validate(req.query) with Joi
-     If validation fails, return 400 status with error message
+     If validation fails, return proper status code with error message
     
      TODO: Extract and set default values for pagination and filtering
-     Get page (default: 1), limit (default: 10) from validated query
-     Get status, priority, sortBy (default: 'createdAt'), sortOrder (default: 'desc')
+     Get page default: 1, limit default: 10 from validated query
+     Get status, priority, sortBy 'createdAt', sortOrder 'desc'
      Get search term for title/description search
     
      TODO: Build database query conditions
@@ -40,14 +40,13 @@ router.get("/", async (req: AuthRequest, res: Response): Promise<void> => {
      Add search functionality for title and description if search term provided
     
      TODO: Execute database query with pagination and sorting
-     Use Task.find() with filters, skip, limit, and sort
-     Calculate skip value: (page - 1) * limit
-     Apply sorting: { [sortBy]: sortOrder === 'asc' ? 1 : -1 }
-     Get total count for pagination: Task.countDocuments() with same filters
+     Calculate skip value and paginate things
+     Apply sorting: sortOrder 'asc' or 'des'
+     Get total count for pagination with same filters
     
      TODO: Send paginated response
      Response format: {
-       tasks: Task[],
+       tasks: Task[](array),
        pagination: {
          total: number,
          page: number,
@@ -71,20 +70,19 @@ router.get("/:id", async (req: AuthRequest, res: Response): Promise<void> => {
      TODO: Extract and validate task ID
      Get taskId from req.params.id
      Validate if it's a valid MongoDB ObjectId format
-     If invalid format, return 400 status with error message
+     If invalid format, return appropriate status with error message
     
 
-     TODO: Find task by ID and user
-     Use Task.findOne() with conditions: { _id: taskId, userId: req.user.id }
-     This ensures user can only access their own tasks
+     TODO: Find task by ID and user with conditions: { _id: taskId, userId: req.user.id }
+     ensure user can only access their own tasks
     
 
      TODO: Check if task exists
-     If task not found, return 404 status with message: "Task not found"
+     If task not found, return appropriate status code with message: "Task not found"
     
 
      TODO: Return the task
-     Send 200 status with task data: { task: foundTask }
+     Send appropriate status with task data: { task: foundedTask }
     */
   } catch (error) {
      if (error instanceof Error) {
@@ -100,9 +98,9 @@ router.post("/", async (req: AuthRequest, res: Response): Promise<void> => {
     /*
      TODO: Validate request body using taskCreationSchema
      Expected req.body format: { title: string, description?: string, status?: TaskStatus, priority?: TaskPriority, dueDate?: Date }
-     Use taskCreationSchema.validate(req.body) with Joi
+     Use taskCreationSchema for validating request body with Joi
 
-     If validation fails, return 400 status with validation error details
+     If validation fails, return appropriate status with validation error details
      TODO: Extract validated data and set defaults
 
      Get title, description, status, priority, dueDate from validated body
@@ -120,10 +118,10 @@ router.post("/", async (req: AuthRequest, res: Response): Promise<void> => {
      - updatedAt: new Date()
 
      TODO: Save task to database
-     Use Task.create() or new Task().save() to create the task
+     Use Task shema to store
 
      TODO: Return created task
-     Send 201 status with created task: { task: createdTask }
+     Send appropriate status with created task: { task: createdTask }
      */
   } catch (error) {
     if (error instanceof Error) {
@@ -140,28 +138,27 @@ router.put("/:id", async (req: AuthRequest, res: Response): Promise<void> => {
      TODO: Extract and validate task ID
      Get taskId from req.params.id
      Validate if it's a valid MongoDB ObjectId format
-     If invalid format, return 400 status with error message
+     If invalid format, return appropriate status with error message
     
 
      TODO: Validate request body using taskUpdateSchema
      Expected req.body format: { title?: string, description?: string, status?: TaskStatus, priority?: TaskPriority, dueDate?: Date }
      Use taskUpdateSchema.validate(req.body) with Joi
-     If validation fails, return 400 status with validation error details
+     If validation fails, return appropriate status with validation error details
     
 
      TODO: Find and check if task exists and belongs to user
-     Use Task.findOne() with conditions: { _id: taskId, userId: req.user.id }
-     If task not found, return 404 status with message: "Task not found"
+     If task not found, return appropriate status with message: "Task not found"
     
 
      TODO: Update task with provided fields only
      Create updateData object with validated fields
-     Add updatedAt: new Date() to updateData
-     Use Task.findByIdAndUpdate() with { new: true } to return updated document
+     Add updatedAt to updateData
+     return updated document
     
 
      TODO: Return updated task
-     Send 200 status with updated task: { task: updatedTask }
+     Send appropriate status with updated task: { task: updatedTask }
     */
   } catch (error) {
     if (error instanceof Error) {
@@ -180,17 +177,16 @@ router.delete(
        TODO: Extract and validate task ID
        Get taskId from req.params.id
        Validate if it's a valid MongoDB ObjectId format
-       If invalid format, return 400 status with error message
+       If invalid format, return appropriate status with error message
 
-       TODO: Find and delete task
-       Use Task.findOneAndDelete() with conditions: { _id: taskId, userId: req.user.id }
+       TODO: Find and delete task on db with conditions: { _id: taskId, userId: req.user.id }
        This ensures user can only delete their own tasks
 
        TODO: Check if task was found and deleted
-       If no task was deleted (result is null), return 404 status with message: "Task not found"
+       If no task was deleted (result is null), return appropriate status with message: "Task not found"
 
        TODO: Return success message
-       Send 200 status with success message: { message: "Task deleted successfully" }
+       Send appropriate status with success message: { message: "Task deleted successfully" }
        */
     } catch (error) {
       if (error instanceof Error) {
@@ -214,10 +210,10 @@ router.get(
        - completed: count where userId = req.user.id AND status = TaskStatus.COMPLETED
 
        TODO: Get counts by priority
-       Use Task.countDocuments() for each priority:
-       - low: count where userId = req.user.id AND priority = TaskPriority.LOW
-       - medium: count where userId = req.user.id AND priority = TaskPriority.MEDIUM
-       - high: count where userId = req.user.id AND priority = TaskPriority.HIGH
+       Use Task Model to perform operation :
+       - low: count where userId = req.user.id AND priority = TaskPriority LOW
+       - medium: count where userId = req.user.id AND priority = TaskPriority MEDIUM
+       - high: count where userId = req.user.id AND priority = TaskPriority HIGH
 
        TODO: Get overdue tasks count
        Count tasks where userId = req.user.id AND dueDate < new Date() AND status != TaskStatus.COMPLETED
@@ -226,7 +222,7 @@ router.get(
        Count all tasks where userId = req.user.id
 
        TODO: Return statistics
-       Send 200 status with stats object:
+       Send appropriate status with stats object:
        {
          statusCounts: { pending, inProgress, completed },
          priorityCounts: { low, medium, high },
