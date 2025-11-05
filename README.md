@@ -9,6 +9,7 @@ This is a task tracking backend where users can add, view, update, or delete tas
 
 You are tasked with completing a task management system built with JavaScript, Node.js, Express, and MongoDB with Mongoose ODM. The system has authentication with specific permissions and capabilities.
 
+
 ### Requirements
 Authenticated users can:
 1. List all tasks with filters and pagination
